@@ -1,12 +1,15 @@
 package com.emailhelper.emailhelper.config;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.emailhelper.emailhelper.model.*;
@@ -15,6 +18,7 @@ import com.emailhelper.emailhelper.model.enums.ERole;
 import com.emailhelper.emailhelper.repository.CandidateRepository;
 import com.emailhelper.emailhelper.repository.EnrollmentRepository;
 import com.emailhelper.emailhelper.repository.RoleRepository;
+import com.emailhelper.emailhelper.repository.UserRepository;
 
 @ComponentScan(basePackages = "com.helpdesk") 
 @Component
@@ -26,32 +30,24 @@ public class DemoDatabasePopulator {
 	private EnrollmentRepository enrollmentRepository;
 	@Autowired 
 	private RoleRepository roleRepository;
+	
+	@Autowired 
+	private UserRepository userRepository;
+	
+	@Autowired
+	PasswordEncoder encoder;
+	
 	@Primary
 	@PostConstruct
 	public void populateDatabase() {
 		if (this.candidateRepository.count() == 0){
-		for (int i = 0; i < 3; i++) {
-			if(i==0) {
-				Role roleUser = new Role(ERole.ROLE_USER);
-				this.roleRepository.save(roleUser);
-			}
-			if(i==1) {
-				Role roleModerator = new Role(ERole.ROLE_MODERATOR);
-				this.roleRepository.save(roleModerator);
-			}
-			if(i==2) {
-				Role roleAdmin = new Role(ERole.ROLE_ADMIN);
-				this.roleRepository.save(roleAdmin);
-			}
+			Role roleUser = new Role(ERole.ROLE_USER);
+			this.roleRepository.save(roleUser);
+			Role roleModerator = new Role(ERole.ROLE_MODERATOR);
+			this.roleRepository.save(roleModerator);
+			Role roleAdmin = new Role(ERole.ROLE_ADMIN);
+			this.roleRepository.save(roleAdmin);
 			
-		}
-		}
-
-
-
-
-		if (this.candidateRepository.count() == 0 &&
-				this.enrollmentRepository.count() == 0) {
 			Candidate candidate = new Candidate();
 			candidate.setFirstName("Cristian");
 			candidate.setLastName("Dumitrache");
@@ -85,6 +81,15 @@ public class DemoDatabasePopulator {
 			candidate3.setPhoneNumber("0791112222");
 			candidate3.setIsSubscribed(true);
 			this.candidateRepository.save(candidate3);
+			
+			Set<Role> rolesUser = Collections.singleton(roleUser);
+			Set<Role> rolesMod = Collections.singleton(roleModerator);
+			Set<Role> rolesAdmin = Collections.singleton(roleAdmin);
+			
+			User cureaAdmin = new User("cureaAdmin", "curea@admin.com", encoder.encode("12345678"));
+			cureaAdmin.setRoles(rolesAdmin);
+			this.userRepository.save(cureaAdmin);
+			
 		}
 	}
 	
