@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Type;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.emailhelper.emailhelper.model.enums.CandidateStatus;
 
@@ -55,6 +57,10 @@ public class Candidate {
 	@Column(name = "email", nullable = false)
 	private String email;
 	
+	@Column(name = "is_subscribed", nullable = false)
+	@Type(type = "org.hibernate.type.NumericBooleanType")
+	private Boolean isSubscribed;
+	
 	@JsonIgnore
 	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "candidate")
 	private
@@ -73,6 +79,7 @@ public class Candidate {
 		this.setFirstName(candidate.getFirstName());
 		this.setLastName(candidate.getLastName());
 		this.setPhoneNumber(candidate.getPhoneNumber());
+		this.setIsSubscribed(candidate.getIsSubscribed());
 	}
 	
 	public Long getId() {
@@ -146,6 +153,15 @@ public class Candidate {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Boolean getIsSubscribed() {
+		return isSubscribed;
+	}
+
+	public void setIsSubscribed(Boolean isSubscribed) {
+		this.isSubscribed = isSubscribed;
+	}
+
 
 	
 }
