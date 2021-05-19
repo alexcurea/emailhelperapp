@@ -55,8 +55,9 @@ public class DemoDatabasePopulator {
 			candidate.setBirthDate(new Date());
 			candidate.setCity("Buzau");
 			candidate.setCountry("Romania");
-			candidate.setEmail("cdr@yahoo.com");
+			candidate.setEmail("alex20_96@yahoo.com");
 			candidate.setPhoneNumber("0792929292");
+			candidate.setIsSubscribed(true);
 			this.candidateRepository.save(candidate);
 			Candidate candidate2 = new Candidate();
 			candidate2.setFirstName("Curea");
@@ -65,8 +66,9 @@ public class DemoDatabasePopulator {
 			candidate2.setBirthDate(new Date());
 			candidate2.setCity("Rm. Sarat");
 			candidate2.setCountry("Romania");
-			candidate2.setEmail("alex20_96@yahoo.com");
+			candidate2.setEmail("alexandrucurea20@yahoo.com");
 			candidate2.setPhoneNumber("0744464464");
+			candidate2.setIsSubscribed(true);
 			this.candidateRepository.save(candidate2);
 			Candidate candidate3 = new Candidate();
 			candidate3.setFirstName("Mihaela");
@@ -75,8 +77,9 @@ public class DemoDatabasePopulator {
 			candidate3.setBirthDate(new Date());
 			candidate3.setCity("Bucuresti");
 			candidate3.setCountry("Romania");
-			candidate3.setEmail("mihav@gmail.com");
+			candidate3.setEmail("alxdraghiciu@gmail.com");
 			candidate3.setPhoneNumber("0791112222");
+			candidate3.setIsSubscribed(true);
 			this.candidateRepository.save(candidate3);
 			
 			Set<Role> rolesUser = Collections.singleton(roleUser);
