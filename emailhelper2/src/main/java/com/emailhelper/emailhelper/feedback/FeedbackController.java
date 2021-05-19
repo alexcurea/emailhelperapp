@@ -1,7 +1,5 @@
 package com.emailhelper.emailhelper.feedback;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
@@ -15,20 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.emailhelper.emailhelper.model.Candidate;
 import com.emailhelper.emailhelper.model.FeedbackDto;
-import com.emailhelper.emailhelper.model.Newsletter;
-import com.emailhelper.emailhelper.repository.CandidateRepository;
 import com.emailhelper.emailhelper.repository.FeedbackDtoRepository;
-import com.emailhelper.emailhelper.repository.NewsletterRepository;
 
 import java.io.File;
-import java.util.List;
-
-import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.validation.ValidationException;
 
@@ -36,16 +26,8 @@ import javax.validation.ValidationException;
 @RequestMapping("/feedback")
 public class FeedbackController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
-	
 	@Autowired
 	private FeedbackDtoRepository feedbackDtoRepository;
-	
-	@Autowired
-	private NewsletterRepository newsletterRepository;
-	
-	@Autowired
-	private CandidateRepository candidateRepository;
 	
 	@Autowired
     private JavaMailSender mailSender;
@@ -99,48 +81,14 @@ public class FeedbackController {
         helper.setSubject(feedback.getSubject());
         helper.setText(feedback.getContent(), true);
         
-        FileSystemResource file = new FileSystemResource(new File("C:\\Users\\Curea\\git\\emailhelperapp\\emailhelper2\\src\\main\\resources\\pdf\\Metodologia_de_admitere.pdf"));
+        FileSystemResource file = new FileSystemResource(new File("E:\\Scoala\\Proiecte\\LICENTA\\EmailHelper-master\\emailhelper2\\src\\main\\resources\\pdf\\Metodologia_de_admitere.pdf"));
         helper.addAttachment("Metodologia_de_admitere.pdf", file);
         
-        FileSystemResource resource = new FileSystemResource(new File("C:\\Users\\Curea\\git\\emailhelperapp\\emailhelper2\\src\\main\\resources\\img\\ut.png"));
+        FileSystemResource resource = new FileSystemResource(new File("E:\\Scoala\\Proiecte\\LICENTA\\EmailHelper-master\\emailhelper2\\src\\main\\resources\\img\\ut.png"));
         helper.addInline("image001", resource);
         
         mailSender.send(message);
         this.feedbackDtoRepository.save(feedback);
-    }
-    
-    @PostMapping(value="/newsletter/send", consumes=MediaType.APPLICATION_JSON_VALUE)
-    public void sendNewsletter(@RequestBody Newsletter newsletter,
-                             BindingResult bindingResult) throws MessagingException{
-        if(bindingResult.hasErrors()){
-            throw new ValidationException("Newsletter is not valid");
-        }
-        
-        List<Candidate> subscribedCandidates = this.candidateRepository.findByIsSubscribed(true);
-        String joinedAdresses = subscribedCandidates.stream()
-        		.map(Candidate::getEmail)
-        		.collect(Collectors.joining(", "));
-        
-        logger.info("Adresses:",  joinedAdresses);
-        
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        
-        
-        
-        helper.setFrom("admitere@unitbv.ro");
-        helper.setTo(InternetAddress.parse(joinedAdresses));
-        helper.setSubject(newsletter.getTitle());
-        helper.setText(newsletter.getContent(), true);
-        
-        //FileSystemResource file = new FileSystemResource(new File("C:\\Users\\Curea\\git\\emailhelperapp\\emailhelper2\\src\\main\\resources\\pdf\\Metodologia_de_admitere.pdf"));
-        //helper.addAttachment("Metodologia_de_admitere.pdf", file);
-        
-        FileSystemResource resource = new FileSystemResource(new File("C:\\Users\\Curea\\git\\emailhelperapp\\emailhelper2\\src\\main\\resources\\img\\ut.png"));
-        helper.addInline("image001", resource);
-        
-        mailSender.send(message);
-        this.newsletterRepository.save(newsletter);
     }
         
 }

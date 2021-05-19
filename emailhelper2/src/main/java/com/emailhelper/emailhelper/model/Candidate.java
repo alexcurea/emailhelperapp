@@ -55,9 +55,6 @@ public class Candidate {
 	@Column(name = "email", nullable = false)
 	private String email;
 	
-	@Column(columnDefinition = "boolean default true")
-	private Boolean isSubscribed;
-	
 	@JsonIgnore
 	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "candidate")
 	private
@@ -76,7 +73,6 @@ public class Candidate {
 		this.setFirstName(candidate.getFirstName());
 		this.setLastName(candidate.getLastName());
 		this.setPhoneNumber(candidate.getPhoneNumber());
-		this.setIsSubscribed(candidate.getIsSubscribed());
 	}
 	
 	public Long getId() {
@@ -150,15 +146,6 @@ public class Candidate {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public Boolean getIsSubscribed() {
-		return isSubscribed;
-	}
-
-	public void setIsSubscribed(Boolean isSubscribed) {
-		this.isSubscribed = isSubscribed;
-	}
-
 
 	
 }

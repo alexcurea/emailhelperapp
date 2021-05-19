@@ -9,8 +9,8 @@
 		<version>2.4.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.emailhelper</groupId>
-	<artifactId>emailhelper</artifactId>
+	<groupId>com.helpdesk</groupId>
+	<artifactId>helpdesk</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>emailhelper</name>
 	<description>enrolment emailhelper api</description>
